@@ -12,11 +12,8 @@ conda install opencv=3.3.1
 pip install matplotlib=3.3.4
 ```
 ## 📦 results
-You can download our precomputed disparity predictions from the following links:
 
-
-| Training modality | Accuracy    | Loss | 
-|-------------------|-------------|-----------------|-----------------------------------------------------------------------------------------------|
+| Training modality | Accuracy    | Loss            | 
 | CNN-C1            | 0.8895      | 0.1332          |           
 | CNN-C2            | 0.9311      | 0.0557          |       
 
