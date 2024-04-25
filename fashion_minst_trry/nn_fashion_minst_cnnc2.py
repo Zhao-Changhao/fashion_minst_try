@@ -62,9 +62,12 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 训练模型
+losses = []  # 用于存储每个epoch的平均loss
+
 num_epochs = 20
 for epoch in range(num_epochs):
     model.train()
+    total_loss = 0
     for i, (images, labels) in enumerate(train_loader):
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
@@ -73,9 +76,15 @@ for epoch in range(num_epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        total_loss += loss.item()
         
         if (i+1) % 10 == 0:
             print(f'Epoch [{epoch+1}/{num_epochs}], Step [{i+1}/{len(train_loader)}], Loss: {loss.item():.4f}')
+
+    avg_loss = total_loss / len(train_loader)
+    losses.append(avg_loss)
+    print(f'Epoch [{epoch+1}/{num_epochs}] completed, Average Loss: {avg_loss:.4f}')
 
 # 评估模型
 model.eval()
@@ -90,6 +99,16 @@ with torch.no_grad():
         correct += (predicted == labels).sum().item()
 
     print(f'Accuracy of the network on the 10000 test images: {100 * correct / total} %')
+
+# loss可视化
+plt.figure(figsize=(10, 5))
+plt.plot(range(1, num_epochs+1), losses, marker='o', linestyle='-', color='b')
+plt.title('Training Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Average Loss')
+plt.grid(True)
+plt.xticks(range(1, num_epochs+1))  # 确保每个epoch都有一个标记
+plt.show()
 
 # 显示9张图片和它们的预测
 dataiter = iter(test_loader)
