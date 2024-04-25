@@ -99,16 +99,20 @@ labels = labels[:9]
 outputs = model(images.to(device))
 _, predicted = torch.max(outputs, 1)
 
-# 显示图片和预测类别
-def imshow(img):
-    img = img / 2 + 0.5  # 反归一化
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+# 图像显示及标签函数
+def imshow(images, labels, predicted_labels, classes):
+    images = images / 2 + 0.5  # 反归一化
+    fig, axes = plt.subplots(1, len(images), figsize=(12, 2.5))
+    for idx, (image, ax) in enumerate(zip(images, axes)):
+        image = image.numpy().transpose((1, 2, 0))
+        ax.imshow(image)
+        ax.set_title(f"Pred: {classes[predicted_labels[idx]]}\nTrue: {classes[labels[idx]]}")
+        ax.axis('off')
     plt.show()
 
 # 图像类别
 classes = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
            'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-imshow(torchvision.utils.make_grid(images))
+imshow(torchvision.utils.make_grid(images), labels, predicted, classes)
 print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(9)))
