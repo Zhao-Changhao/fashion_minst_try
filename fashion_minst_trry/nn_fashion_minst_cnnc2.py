@@ -108,6 +108,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Average Loss')
 plt.grid(True)
 plt.xticks(range(1, num_epochs+1))  # 确保每个epoch都有一个标记
+plt.savefig('training_loss.png')  # 保存为PNG文件
 plt.show()
 
 # 显示9张图片和它们的预测
